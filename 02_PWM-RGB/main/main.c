@@ -49,7 +49,7 @@ void app_main(void)
 
         vTaskDelay(500 / portTICK_PERIOD_MS);  
 
-        RGB_CHANGE(led_rgb_1, 206, 200, 91);
+        RGB_CHANGE(led_rgb_1, 66, 30, 151);
 
         vTaskDelay(400 / portTICK_PERIOD_MS);   
         
