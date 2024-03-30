@@ -10,6 +10,20 @@
 
 #define GPIO_LED           (13)         // Número del pin del led.
 
+// Tarea Blink
+void blink_led(void *pvParameters)              //La función xTaskCreate espera un puntero 
+{
+    for(;;)
+    {
+        gpio_set_level(GPIO_LED, 0);
+        vTaskDelay(550 / portTICK_PERIOD_MS);   
+            
+        gpio_set_level(GPIO_LED, 1);         
+        vTaskDelay(300 / portTICK_PERIOD_MS);   
+    }
+}
+
+
 void app_main(void)
 {
     // Configurar el GPIO
@@ -21,14 +35,15 @@ void app_main(void)
     io_conf.pull_up_en = 0;
     gpio_config(&io_conf);
 
-    while(1)
+
+    // Crear tarea
+    TaskHandle_t xHandle = NULL;
+    xTaskCreate(blink_led, "B_LED", 1024, NULL, tskIDLE_PRIORITY, &xHandle);
+    configASSERT( xHandle );
+
+    for(;;)
     {
-        
-        gpio_set_level(GPIO_LED, 0);            // Apaga el Led
-        vTaskDelay(500 / portTICK_PERIOD_MS);   // Esperar 500 ms
-        
-        gpio_set_level(GPIO_LED, 1);            // Enciende el led
-        vTaskDelay(400 / portTICK_PERIOD_MS);   // Esperar 400 ms
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 
 }
