@@ -23,11 +23,12 @@ void app_main(void)
 
     while(1)
     {
-        gpio_set_level(GPIO_LED, 0);
-        vTaskDelay(500 / portTICK_PERIOD_MS);  // Esperar 500 ms
         
-        gpio_set_level(GPIO_LED, 1);
-        vTaskDelay(400 / portTICK_PERIOD_MS);  // Esperar 400 ms
+        gpio_set_level(GPIO_LED, 0);            // Apaga el Led
+        vTaskDelay(500 / portTICK_PERIOD_MS);   // Esperar 500 ms
+        
+        gpio_set_level(GPIO_LED, 1);            // Enciende el led
+        vTaskDelay(400 / portTICK_PERIOD_MS);   // Esperar 400 ms
     }
 
 }
