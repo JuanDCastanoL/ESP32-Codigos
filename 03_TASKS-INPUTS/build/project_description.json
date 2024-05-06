@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "03_TASKS-INPUTS",
-    "project_version":    "8b75464-dirty",
+    "project_version":    "cd3813e-dirty",
     "project_path":       "C:/ESP32/ESP32-Codigos/03_TASKS-INPUTS",
     "idf_path":           "C:/esp/v5.2/esp-idf",
     "build_dir":          "C:/ESP32/ESP32-Codigos/03_TASKS-INPUTS/build",
