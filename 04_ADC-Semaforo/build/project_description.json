@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "04_ADC-Semaforo",
-    "project_version":    "b65f86f",
+    "project_version":    "1fa5782-dirty",
     "project_path":       "C:/ESP32/ESP32-Codigos/04_ADC-Semaforo",
     "idf_path":           "C:/esp/v5.2/esp-idf",
     "build_dir":          "C:/ESP32/ESP32-Codigos/04_ADC-Semaforo/build",
