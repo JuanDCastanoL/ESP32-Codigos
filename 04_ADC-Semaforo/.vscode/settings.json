@@ -16,7 +16,8 @@
     "idf.toolsPathWin": "c:\\espressif",
     "files.associations": {
         "stdio.h": "c",
-        "adc.h": "c"
+        "adc.h": "c",
+        "adc_cali_scheme.h": "c"
     },
     "idf.flashType": "UART",
     "idf.portWin": "COM8"
