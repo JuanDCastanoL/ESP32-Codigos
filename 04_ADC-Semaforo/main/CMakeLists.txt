@@ -1,2 +1,2 @@
-idf_component_register(SRCS "ESP32Utilidades.c" "main.c"
+idf_component_register(SRCS "rgb.c" "ESP32Utilidades.c" "main.c"
                     INCLUDE_DIRS ".")

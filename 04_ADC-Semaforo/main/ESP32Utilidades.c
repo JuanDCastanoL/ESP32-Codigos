@@ -70,8 +70,6 @@ void example_adc_calibration_deinit(adc_cali_handle_t handle)
  * @param out_raw int: Puntero donde se almacenará el valor promedio de las lecturas.
  * @param samples int: El número de muestras a tomar y promediar.
  * 
- * @return NULL
- * 
 */
 void adc_oneshot_read_multisample(adc_oneshot_unit_handle_t handle, adc_channel_t chan, int *out_raw, int samples){
     
