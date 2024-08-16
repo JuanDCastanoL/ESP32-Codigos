@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include "freertos/FreeRTOS.h"
 #include "esp_log.h" 
-
 #include "freertos/semphr.h"
 #include "freertos/task.h"
 #include "esp_adc/adc_oneshot.h"
@@ -23,7 +22,7 @@ led_rgb_t led_rgb_1;
 
 #define ATTEN_ADC ADC_ATTEN_DB_12
 #define BITWH_ADC ADC_BITWIDTH_12
-//#define CANAL_ADC_POT ADC_CHANNEL_4            // GPIO32 - ADC1 CHANNEL4 - Potenciometro
+#define CANAL_ADC_POT ADC_CHANNEL_4            // GPIO32 - ADC1 CHANNEL4 - Potenciometro
 #define CANAL_ADC_LDR ADC_CHANNEL_6            // GPIO34 - ADC1 CHANNEL6 - Resistencia LDR 
 #define SAMPLES               (20) 
 
@@ -38,17 +37,16 @@ static int adc_raw[2];
 #define GPIO_LED_1_B           (14)
 
 
-/*
+
 void task_pot(void *arg)
-{
-    int cont = 0;
-    for(;;){
-
-        if (xSemaphoreTake(xSemaphore, portMAX_DELAY) == pdTRUE){
-
-            adc_oneshot_read_multisample(adc1_handle, CANAL_ADC_POT, &adc_raw[0], SAMPLES);
-            //ESP_LOGI(TAG, "ADC%d Channel[%d] Raw Data: %d", ADC_UNIT_1 + 1, CANAL_ADC_POT, adc_raw[0]);
-
+{    
+    for(;;)
+    {
+        for (size_t i = 0; i < 10; i++)
+        {
+            //adc_oneshot_read_multisample(adc1_handle, CANAL_ADC_POT, &adc_raw[0], SAMPLES);
+            ESP_ERROR_CHECK(adc_oneshot_read(adc1_handle, CANAL_ADC_POT, &adc_raw[0]));
+            ESP_LOGI(TAG, "Lectura %d Potenciometro: %d", i+1, adc_raw[0]);
             
             if (adc_raw[0] < 1365) {
                 RGB_CHANGE(led_rgb_1, 0, 0, 255); 
@@ -57,52 +55,45 @@ void task_pot(void *arg)
             } else {
                 RGB_CHANGE(led_rgb_1, 255, 0, 0);    
             }
-       
-
-            if (cont == 10) {
-                cont = 0;
-                xSemaphoreGive(xSemaphore);
-            } else {
-                cont++;
-                vTaskDelay(500 / portTICK_PERIOD_MS); 
-            }
-                            
-
+           
+            vTaskDelay(500 / portTICK_PERIOD_MS);            
+                         
         }
-    } 
-        
+        xSemaphoreGive(xSemaphore);
+        vTaskDelay(10000 / portTICK_PERIOD_MS);  
+    }         
 }
-*/
+
 
 
 void task_ldr(void *arg)
 {
-    
     for (;;)
     {
         if (xSemaphoreTake(xSemaphore, portMAX_DELAY) == pdTRUE){
 
-                        
-            adc_oneshot_read_multisample(adc1_handle, CANAL_ADC_LDR, &adc_raw[1], SAMPLES);
-            ESP_LOGI(TAG, "ADC%d Channel[%d] Raw Data: %d", ADC_UNIT_1 + 1, CANAL_ADC_LDR, adc_raw[1]);
+            for (size_t i = 0; i < 10; i++)
+            {
+                //adc_oneshot_read_multisample(adc1_handle, CANAL_ADC_LDR, &adc_raw[1], SAMPLES);
+                ESP_ERROR_CHECK(adc_oneshot_read(adc1_handle, CANAL_ADC_LDR, &adc_raw[1]));
+                ESP_LOGI(TAG, "Lectura %d LDR: %d", i+1, adc_raw[1]);
 
-            if (adc_raw[1] < 900){
-                RGB_CHANGE(led_rgb_1, 170, 0, 25);
-            } else if (adc_raw[1] < 1800){
-                RGB_CHANGE(led_rgb_1, 70, 30, 25);
-            } else if (adc_raw[1] < 2600){
-                RGB_CHANGE(led_rgb_1, 30, 70, 25);
-            } else {
-                RGB_CHANGE(led_rgb_1, 0, 170, 25);
-            }
-
-
-            xSemaphoreGive(xSemaphore);
+                if (adc_raw[1] < 800){
+                    RGB_CHANGE(led_rgb_1, 160, 0, 25);
+                } else if (adc_raw[1] < 1600){
+                    RGB_CHANGE(led_rgb_1, 70, 30, 25);
+                } else if (adc_raw[1] < 2400){
+                    RGB_CHANGE(led_rgb_1, 30, 70, 25);
+                } else {
+                    RGB_CHANGE(led_rgb_1, 0, 170, 25);
+                }
+                vTaskDelay(500 / portTICK_PERIOD_MS);
             
-            vTaskDelay(500 / portTICK_PERIOD_MS); 
-            
-            
+            }       
+                      
         }
+
+        vTaskDelay(1000 / portTICK_PERIOD_MS);       // Para que no se pegue en el for (;;)
     }
     
 }
@@ -113,30 +104,20 @@ void task_ldr(void *arg)
 
 void app_main(void)
 {
-    //---------------- ↓ Semaforo Set-Up ↓------------------//
+    //---------------- ↓ Semaforo Set-Up ↓ ------------------//
 
-    xSemaphore = xSemaphoreCreateBinary();
-    /*
-    if(xSemaphore != NULL){
-        ESP_LOGE(TAG, "El semáforo no se ha creado correctamente.");
-    }*/
-    xSemaphoreGive(xSemaphore);
+    xSemaphore = xSemaphoreCreateBinary(); 
 
-    //---------------- ↑ Semaforo Set-Up ↑ -------------------//
+    //---------------- ↓ Tareas Set-Up ↓ ------------------//
 
-
-    //---------------- ↓ Tareas Set-Up ↓------------------//
-
-    //xTaskCreatePinnedToCore(task_pot, "T_POT", 8192, NULL, 0, &xHandle_task_pot, 1);
-    //configASSERT( xHandle_task_pot );
+    xTaskCreatePinnedToCore(task_pot, "T_POT", 2048, NULL, 0, &xHandle_task_pot, 1);
+    configASSERT( xHandle_task_pot );
 
     xTaskCreatePinnedToCore(task_ldr, "T_LDR", 2048, NULL, 0, &xHandle_task_ldr, 1);
     configASSERT( xHandle_task_ldr );
 
-    //---------------- ↑ Tareas Set-Up ↑ -------------------//
 
-
-    //---------------- ↓ ADC Set-Up ↓------------------//
+    //---------------- ↓ ADC Set-Up ↓ ------------------//
 
     adc_oneshot_unit_init_cfg_t init_config1 = {
         .unit_id = ADC_UNIT_1,
@@ -147,18 +128,15 @@ void app_main(void)
         .bitwidth = BITWH_ADC,
         .atten = ATTEN_ADC,
     };
-    //ESP_ERROR_CHECK(adc_oneshot_config_channel(adc1_handle, CANAL_ADC_POT, &config));   // Conf canal 4 - Potenciometro
+    ESP_ERROR_CHECK(adc_oneshot_config_channel(adc1_handle, CANAL_ADC_POT, &config));   // Conf canal 4 - Potenciometro
     ESP_ERROR_CHECK(adc_oneshot_config_channel(adc1_handle, CANAL_ADC_LDR, &config));   // Conf canal 6 - Resistencia LDR
 
-    //---------------- ↑ ADC Set-Up ↑ -------------------//
 
-
-    //---------------- ↓ RGB Set-Up ↓------------------//
+    //---------------- ↓ RGB Set-Up ↓ ------------------//
 
     RGB_TIMER_INIT();
     led_rgb_1 = RGB_CHANNEL_INIT_1(GPIO_LED_1_R, GPIO_LED_1_G, GPIO_LED_1_B);
 
-    //---------------- ↑ RGB Set-Up ↑ -------------------//
 
     while(1){
            

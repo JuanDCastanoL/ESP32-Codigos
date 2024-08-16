@@ -74,7 +74,7 @@ void example_adc_calibration_deinit(adc_cali_handle_t handle)
 void adc_oneshot_read_multisample(adc_oneshot_unit_handle_t handle, adc_channel_t chan, int *out_raw, int samples){
     
     if(samples<1){
-        ESP_LOGW(TAG0, "Samples must be greater than 0, exiting of multisample.");
+        ESP_LOGW(TAG0, "Samples must be greater than 0.");
         return;
 
     }else{
