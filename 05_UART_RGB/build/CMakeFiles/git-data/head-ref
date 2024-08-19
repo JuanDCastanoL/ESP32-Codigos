@@ -1,1 +1,7 @@
-1c03d80d916022760f1a9505e112321574a3435c
+b65f86f4ec087faaaaecee4f7fd91c78a9ee76a2 1fa578298121fe9791cb0f1daf85993a403f0c32 JuanDCastanoL <mrdrop65@gmail.com> 1717181594 -0500	commit: Codigo base para ADC
+1fa578298121fe9791cb0f1daf85993a403f0c32 6a40a871d0598d41d31392f109fec87cb2547c32 JuanDCastanoL <mrdrop65@gmail.com> 1717190671 -0500	commit: Codigo ADC funcional
+6a40a871d0598d41d31392f109fec87cb2547c32 55cbc5081681a85c1b104578afad8b705cfdebd5 JuanDCastanoL <mrdrop65@gmail.com> 1717273470 -0500	commit: Creacion liberia ADC + multimuestras
+55cbc5081681a85c1b104578afad8b705cfdebd5 57492ac1ba8bc55712ef01386ee3ac4dc0336fbe JuanDCastanoL <mrdrop65@gmail.com> 1719178344 -0500	commit: Creación Semáforo
+57492ac1ba8bc55712ef01386ee3ac4dc0336fbe 71d67b1cccdaa834ef6fdf5b8d262d4ca6696c8b JuanDCastanoL <mrdrop65@gmail.com> 1719262087 -0500	commit: Implementación RGBs segun valor potenciometro
+71d67b1cccdaa834ef6fdf5b8d262d4ca6696c8b 1c03d80d916022760f1a9505e112321574a3435c JuanDCastanoL <mrdrop65@gmail.com> 1719361826 -0500	commit: Se agregó el código correspondiente al LDR
+1c03d80d916022760f1a9505e112321574a3435c e825c8f6045ca358e2307f365d7318430b9e2897 JuanDCastanoL <mrdrop65@gmail.com> 1723849482 -0500	commit: Tarea Uart: Creacion, Led's RGB funcionando
