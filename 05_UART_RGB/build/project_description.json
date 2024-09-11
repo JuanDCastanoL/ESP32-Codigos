@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "05_UART_RGB",
-    "project_version":    "f69e5d5-dirty",
+    "project_version":    "1d1680e-dirty",
     "project_path":       "C:/ESP32/ESP32-Codigos/05_UART_RGB",
     "idf_path":           "C:/esp/v5.2/esp-idf",
     "build_dir":          "C:/ESP32/ESP32-Codigos/05_UART_RGB/build",
